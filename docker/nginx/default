@@ -1,0 +1,86 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+
+    index index.php index.html index.htm;
+
+    server_name _;
+
+    charset utf-8;
+
+    location = /favicon.ico { log_not_found off; access_log off; }
+    location = /robots.txt  { log_not_found off; access_log off; }
+
+    location / {
+      # First attempt to serve request as file, then
+      # as directory, then fall back to displaying a 404.
+      #try_files $uri $uri/ =404;
+      #try_files $uri /framework/main.php?url=$uri&$query_string;
+      try_files $uri $uri/ /index.php$is_args$args;
+    }
+
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    #
+    location ~ \.php$ {
+      include snippets/fastcgi-php.conf;
+    #
+    # # With php7.0-cgi alone:
+    # fastcgi_pass 127.0.0.1:9000;
+    # # With php7.0-fpm:
+      fastcgi_pass unix:/run/php/php7.1-fpm.sock;
+    }
+
+    error_page 404 /index.php;
+
+    location ~ /framework/.*(main|rpc|tiny_mce_gzip)\.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.1-fpm.sock;
+    }
+
+    location ~ /(mysite|framework|cms)/.*\.(php|php3|php4|php5|phtml|inc)$ {
+        deny all;
+    }
+
+    location ~ /\.. {
+        deny all;
+    }
+
+    location ~ \.ss$ {
+        satisfy any;
+        allow 127.0.0.1;
+        deny all;
+    }
+
+    location ~ web\.config$ {
+        deny all;
+    }
+
+    location ~ \.ya?ml$ {
+        deny all;
+    }
+
+    location ^~ /vendor/ {
+        deny all;
+    }
+
+    location ~* /silverstripe-cache/ {
+        deny all;
+    }
+
+    location ~* composer\.(json|lock)$ {
+        deny all;
+    }
+
+    location ~* /(cms|framework)/silverstripe_version$ {
+        deny all;
+    }
+
+    # deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+    #
+    location ~ /\.ht {
+        deny all;
+    }
+}

@@ -1,0 +1,4 @@
+#!/usr/bin/env /bin/bash
+
+docker build -f apache/Dockerfile -t lab1521.com/apache:latest ./apache
+docker build -f nginx/Dockerfile -t lab1521.com/nginx:latest ./nginx

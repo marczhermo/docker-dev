@@ -1,0 +1,58 @@
+version: '2.1'
+services:
+  apache:
+    build:
+      context: ./docker/apache
+      dockerfile: Dockerfile
+    image: marcz/apache
+    volumes:
+     - /home/marcz/Code:/var/www
+     - /home/marcz/Logs/apache2:/var/log/apache2
+    ports:
+     - "8856:80"
+    networks:
+      marcznet:
+        ipv4_address: 172.19.35.5
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: marcz/nginx
+    volumes:
+     - /home/marcz/Code:/var/www
+     - /home/marcz/Logs/nginx:/var/log/nginx
+     - /home/marcz/Logs/supervisor:/var/log/supervisor
+    ports:
+     - "8871:80"
+    networks:
+      marcznet:
+        ipv4_address: 172.19.35.7
+  mysql:
+    image: mysql:5.7
+    ports:
+     - "3366:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "ss3b_app"
+      MYSQL_USER: "ss3b_app"
+      MYSQL_PASSWORD: "ss3b_app"
+    volumes:
+     - mysqldata:/var/lib/mysql
+     - /home/marcz/Logs/mysql:/var/log/mysql
+    networks:
+      marcznet:
+        ipv4_address: 172.19.35.33
+networks:
+  marcznet:
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      driver: default
+      config:
+       - subnet: 172.19.35.0/24
+         gateway: 172.19.35.1
+volumes:
+  mysqldata:
+    driver: "local"
+  redisdata:
+    driver: "local"
