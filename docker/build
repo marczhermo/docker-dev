@@ -1,4 +1,7 @@
 #!/usr/bin/env /bin/bash
 
-docker build -f apache/Dockerfile -t lab1521.com/apache:latest ./apache
-docker build -f nginx/Dockerfile -t lab1521.com/nginx:latest ./nginx
+docker build -f apache/Dockerfile -t marcz/apache:latest ./apache
+docker build -f nginx/Dockerfile -t marcz/nginx:latest ./nginx
+docker build -f elasticsearch/Dockerfile -t marcz/elasticsearch:latest ./elasticsearch
+docker build -f logstash/Dockerfile -t marcz/logstash:latest ./logstash
+docker build -f kibana/Dockerfile -t marcz/kibana:latest ./kibana
