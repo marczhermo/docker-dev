@@ -11,6 +11,7 @@ services:
      - ./Logs/apache2:/var/log/apache2
     ports:
      - "8856:80"
+     - "9000:9000"
     networks:
       marcznet:
         ipv4_address: 172.19.35.5
@@ -75,6 +76,7 @@ services:
     volumes:
       - ./docker/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./docker/logstash/pipeline:/usr/share/logstash/pipeline
+      - ./Logs/apache2:/var/log/apache2
     ports:
       - "5000:5000"
     environment:
