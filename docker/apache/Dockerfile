@@ -46,4 +46,4 @@ RUN a2enconf servername && a2ensite default && service apache2 restart
 # Default command
 CMD ["apachectl", "-D", "FOREGROUND"]
 
-EXPOSE 80
+EXPOSE 80 9000
